@@ -6,27 +6,38 @@ import (
 	perceptron "github.com/fellippemendonca/artificial-neural-networks/perceptron"
 )
 
-var x = [][]float64{
-	{180.0, 80.0},
-	{175.0, 67.0},
-	{100.0, 30.0},
-	{120.0, 32.0},
+var plan = [][]float64{
+	{0.4, 0.3},
+	{0.3, 0.2},
+	{0.2, 0.1},
+	{0.1, 0.0},
+	{0.0, 0.0},
+	{0.0, 0.1},
+	{0.1, 0.2},
+	{0.2, 0.3},
+	{0.3, 0.4},
+	{0.4, 0.5},
 }
 
-var y = []int{0, 0, 1, 1}
+var truths = []int{1, 1, 1, 1, 1, 0, 0, 0, 0, 0}
 
-// 0 - adult
-// 1 - child
+func checkResult(value int) {
+	if value == 1 {
+		fmt.Println("X >= Y")
+	} else {
+		fmt.Println("X < Y")
+	}
+}
 
 func main() {
-	p := perceptron.New(len(x[0]), 1.0, 10)
-	p.Fit(x, y)
 
-	result := p.Predict([]float64{150.0, 50.0})
-	if result == 0 {
-		fmt.Println("Adult")
-	} else {
-		fmt.Println("Child")
+	x := 0.0
+	y := 0.0
+
+	p := perceptron.New(len(plan[0]), 0.05)
+	for i := 0; i < 5; i++ {
+		perceptron.Teaching(&p, plan, truths)
 	}
-
+	result2 := p.Predict([]float64{x, y})
+	checkResult(result2)
 }
